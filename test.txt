@@ -1,0 +1,2 @@
+temperature,available_spare,available_spare_threshold,percentage_used,endurance group critical warning summary,data_units_read,data_units_written,host_read_commands,host_write_commands,controller_busy_time,power_cycles,power_on_hours,unsafe_shutdowns,media_errors,num_err_log_entries,Warning Temperature Time,Critical Composite Temperature Time,Thermal Management T1 Trans Count,Thermal Management T2 Trans Count,Thermal Management T1 Total Time,Thermal Management T2 Total Time,
+39C,100%,10%,2%,0,26745737,16046963,389947175,276899871,8823,1862,2853,100,0,0,0,0,0,0,0,0,

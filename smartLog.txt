@@ -1,0 +1,21 @@
+temperature				: 39 C
+available_spare				: 100%
+available_spare_threshold		: 10%
+percentage_used				: 2%
+endurance group critical warning summary: 0
+data_units_read				: 2,67,45,737
+data_units_written			: 1,60,46,963
+host_read_commands			: 38,99,47,175
+host_write_commands			: 27,68,99,871
+controller_busy_time			: 8,823
+power_cycles				: 1,862
+power_on_hours				: 2,853
+unsafe_shutdowns			: 100
+media_errors				: 0
+num_err_log_entries			: 0
+Warning Temperature Time		: 0
+Critical Composite Temperature Time	: 0
+Thermal Management T1 Trans Count	: 0
+Thermal Management T2 Trans Count	: 0
+Thermal Management T1 Total Time	: 0
+Thermal Management T2 Total Time	: 0
