@@ -17,7 +17,7 @@ def con_t_C():
 
 if __name__=="__main__":
     list_lines = []
-    file = open("smartLog.txt","r")
+    file = open("smartLog1.txt","r")
 
     #Removes empty spaces and separates lines as list of key value pairs
     for line in file:
@@ -28,21 +28,23 @@ if __name__=="__main__":
     
     file.close()
 
-    for line in list_lines:
-        line[0].strip()
-        line[1].strip()
-        line[1] = line[1].replace(",", "")
-        line[1] = line[1].replace(" ", "")
+    print(list_lines)
 
-    file = open("test.txt","w")
-    for line in list_lines:
-        file.write(line[0] + ",")
-    file.write("\n")
+    # for line in list_lines:
+    #     line[0].strip()
+    #     line[1].strip()
+    #     line[1] = line[1].replace(",", "")
+    #     line[1] = line[1].replace(" ", "")
+
+    # file = open("test.txt","w")
+    # for line in list_lines:
+    #     file.write(line[0] + ",")
+    # file.write("\n")
 
 
 
-    for line in list_lines:
-        file.write(line[1] + ",")
+    # for line in list_lines:
+    #     file.write(line[1] + ",")
 
-    d1 = pd.read_csv("test.txt")
-    d1.to_csv("log.csv", index= None)
+    # d1 = pd.read_csv("test.txt")
+    # d1.to_csv("log.csv", index= None)
