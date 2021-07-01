@@ -18,11 +18,13 @@ def con_t_C():
 if __name__=="__main__":
     list_lines = []
     file = open("smartLog.txt","r")
+
+    #Removes empty spaces and separates lines as list of key value pairs
     for line in file:
         stripped_line = line.strip()
         stripped_line = stripped_line.replace("\t", "")
-        line_list = stripped_line.split(":")
-        list_lines.append(line_list)
+        line_list = stripped_line.split(":") #list of key value pair
+        list_lines.append(line_list) #list of list of key value pairs
     
     file.close()
 
@@ -33,10 +35,12 @@ if __name__=="__main__":
         line[1] = line[1].replace(" ", "")
 
     file = open("test.txt","w")
-
     for line in list_lines:
         file.write(line[0] + ",")
     file.write("\n")
+
+
+
     for line in list_lines:
         file.write(line[1] + ",")
 
