@@ -36,16 +36,16 @@ def write_header():
 
 def check_errors():
 
-    if list_lines[0][1] >= 65:
+    if int(list_lines[0][1][:-1]) >= 65:
         print("NVME Device is Overheating")
 
-    if list_lines[2][1] < 10 :
+    if int(list_lines[2][1][:-1]) < 10 :
         print("NVME is running out of storage")
     
-    if list_lines[11][1] > 44000:
+    if int(list_lines[11][1]) > 44000:
         print("NVME Device is turning old")
 
-    if list_lines[12][1] > 1000:
+    if int(list_lines[12][1]) > 1000:
         print("NVME is facing unsafe shutdowns.\n Please take care !!!\n :) ")
 
 
