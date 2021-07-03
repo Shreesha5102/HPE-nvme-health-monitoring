@@ -55,7 +55,6 @@ def check_errors():
         table.add_row(["Available Spare",list_lines[2][1],"10%","NVME is running out of storage"])
     
     if int(list_lines[11][1].replace(",","")) > parameters["power_on_hours"]:
-        print("NVME Device is turning old")
         table.add_row(["Power On hours",list_lines[11][1]+" hours","44000 hours","NVME is turning old"])
 
     if int(list_lines[12][1]) > parameters["unsafe_shutdowns"]:
@@ -66,11 +65,17 @@ def driver():
     write_header()
     write_header()
     check_errors()
-
-
-if __name__ == '__main__':
-    # while True:
-    #     schedule.every().minutes.do(driver)
-    #     time.sleep(1)
-    driver()
     print(table.draw())
+
+schedule.every(10).seconds.do(driver)
+
+while True:
+        schedule.run_pending()
+        time.sleep(1)
+
+# if __name__ == '__main__':
+#     while True:
+#         schedule.run_pending()
+#         time.sleep(1)
+    # driver()
+    # print(table.draw())
