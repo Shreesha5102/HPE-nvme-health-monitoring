@@ -1,7 +1,19 @@
 import os
+import schedule
+import time
+import json
+from texttable import Texttable
 
 action = 0
 list_lines = []
+
+#loading the parameters
+j = open('threshold.json')
+parameters = json.load(j)
+
+#creating and adding the headers
+table = Texttable()
+table.add_rows([['Parameter','Current Value','Threshold Value','Comments']])
 
 def run_check():
     os.system('sudo nvme smart-log /dev/nvme0 -H > smartLog.txt')
@@ -22,6 +34,7 @@ def extract_log():
 
 def write_header():
     global action
+    extract_log()
     file = open("test.txt","a")
     if action == 0:
         action += 1
@@ -33,22 +46,31 @@ def write_header():
     file.write("\n")
     file.close()
 
-
 def check_errors():
 
-    if int(list_lines[0][1][:-1]) >= 65:
-        print("NVME Device is Overheating")
+    if int(list_lines[0][1][:-1]) >= parameters["temperature"]:
+        table.add_row(["Temperature",list_lines[0][1],"35 C","NVME Overheating"])
 
-    if int(list_lines[2][1][:-1]) < 10 :
-        print("NVME is running out of storage")
+    if int(list_lines[2][1][:-1]) < parameters["available_spare_threshold"] :
+        table.add_row(["Available Spare",list_lines[2][1],"10%","NVME is running out of storage"])
     
-    if int(list_lines[11][1]) > 44000:
+    if int(list_lines[11][1].replace(",","")) > parameters["power_on_hours"]:
         print("NVME Device is turning old")
+        table.add_row(["Power On hours",list_lines[11][1]+" hours","44000 hours","NVME is turning old"])
 
-    if int(list_lines[12][1]) > 1000:
-        print("NVME is facing unsafe shutdowns.\n Please take care !!!\n :) ")
+    if int(list_lines[12][1]) > parameters["unsafe_shutdowns"]:
+        table.add_row(["Unsafe Shutdowns",list_lines[12][1],"1000","NVME is facing unsafe shutdowns.\n Please take care !!!\n :)"])
+
+def driver():
+    run_check()
+    write_header()
+    write_header()
+    check_errors()
 
 
 if __name__ == '__main__':
-    run_check()
-    write_header()
+    # while True:
+    #     schedule.every().minutes.do(driver)
+    #     time.sleep(1)
+    driver()
+    print(table.draw())
