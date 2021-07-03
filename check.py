@@ -49,16 +49,19 @@ def write_header():
 def check_errors():
 
     if int(list_lines[0][1][:-1]) >= parameters["temperature"]:
-        table.add_row(["Temperature",list_lines[0][1],"35 C","NVME Overheating"])
+        table.add_row(["Temperature",list_lines[0][1],"70 C","NVME Drive is overheating. \n Please backup your files to prevent data loss.\n Get your disk checked or replaced!\n "])
 
     if int(list_lines[2][1][:-1]) < parameters["available_spare_threshold"] :
-        table.add_row(["Available Spare",list_lines[2][1],"10%","NVME is running out of storage"])
+        table.add_row(["Available Spare",list_lines[2][1],"10%","NVME drive is running out of storage. \n Please backup your files to prevent data loss.\n Get your disk checked or replaced!\n "])
     
     if int(list_lines[11][1].replace(",","")) > parameters["power_on_hours"]:
-        table.add_row(["Power On hours",list_lines[11][1]+" hours","44000 hours","NVME is turning old"])
+        table.add_row(["Power On hours",list_lines[11][1]+" hours","44000 hours","NVME is reaching end of rated lifespan. \n Please backup your files to prevent data loss.\n Get your disk checked or replaced!\n"])
 
     if int(list_lines[12][1]) > parameters["unsafe_shutdowns"]:
-        table.add_row(["Unsafe Shutdowns",list_lines[12][1],"1000","NVME is facing unsafe shutdowns.\n Please take care !!!\n :)"])
+        table.add_row(["Unsafe Shutdowns",list_lines[12][1],"1000","There are an abnormal number of unsafe shutdowns. \n Please backup your files to prevent data loss.\n Get your disk checked or replaced!\n"])
+        
+    if int(list_lines[14][1]) > parameters["media_errors"]:
+        table.add_row(["Media Errors",list_lines[14][1],"100000","There are a lot of media errors.\n Please backup your files to prevent data loss.\n Get your disk checked or replaced!\n :)"])
 
 def driver():
     run_check()
