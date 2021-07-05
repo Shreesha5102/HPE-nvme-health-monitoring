@@ -1,9 +1,7 @@
 {
     "temperature": 70,
     "available_spare_threshold": 10,
-    "power_on_hours": 4000,
-    "unsafe_shutdowns": 100,
+    "power_on_hours": 4400,
+    "unsafe_shutdowns": 1000,
     "media_errors": 100000,
-    "data_units_read": 40000000,
-    "data_units_written": 40000000
 }
