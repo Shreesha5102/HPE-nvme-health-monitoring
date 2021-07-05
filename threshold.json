@@ -3,5 +3,5 @@
     "available_spare_threshold": 10,
     "power_on_hours": 4400,
     "unsafe_shutdowns": 1000,
-    "media_errors": 100000,
+    "media_errors": 100000
 }
