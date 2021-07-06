@@ -1,7 +1,27 @@
 {
-    "temperature": 70,
-    "available_spare_threshold": 10,
-    "power_on_hours": 4400,
-    "unsafe_shutdowns": 1000,
-    "media_errors": 100000,
+    "temperature": {
+        "threshold": 35,
+        "comparison": ">",
+        "comment": "Device is overheating"
+    },
+    "available_spare_threshold": {
+        "threshold": 11,
+        "comparison": "<",
+        "comment": "Device is running out of Storage"
+    },
+    "power_on_hours": {
+        "threshold": 44000,
+        "comparison": ">",
+        "comment": "Device is turning old"
+    },
+    "unsafe_shutdowns": {
+        "threshold": 1000,
+        "comparison": ">",
+        "comment": "Device is not shuting down properly.\n Please Take care :)"
+    },
+    "media_errors": {
+        "threshold": 10000,
+        "comparison": ">",
+        "comment": "Device is facing lots of media errors"
+    }
 }
