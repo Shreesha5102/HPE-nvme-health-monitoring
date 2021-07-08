@@ -11,7 +11,7 @@ from texttable import Texttable #Create an output table.
 
 action = 0
 main_counter=0
-consecutive_counter=0
+threshold_counter=0
 list_lines = []
 
 #Loading the Threshold Parameters.
@@ -98,9 +98,21 @@ def data_analysis(threshold_temp):
        threshold_counter=threshold_counter+1
     if(list_lines[0][1]<=threshold_temp & threshold_counter==6:
        # Add update for end_timestamp here - end_timestamp=
+       time=get_time_duration(main_counter)
        main_counter=0
        threshold_counter=0
-       print("Device overheated from "+start_timestamp+" to " +end_timestamp+". Check the applications you were running at that given time")       
+       print("Device overheated from "+start_timestamp+" to " +end_timestamp+".\nTotal time Duration was "+time+".\nCheck the applications you were running at that given time") 
+
+def get_time_duration(x):
+    if(x>360):
+       hours=x/360
+       x=x/360
+    if(x>6):
+       minutes=x/6
+       x=x/6
+    seconds=x*10
+       # Append all values together as hours, minutes and seconds: time=
+    return(time)
 #Driver method
 def driver():
     run_check()
