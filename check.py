@@ -10,6 +10,8 @@ from texttable import Texttable #Create an output table.
 
 
 action = 0
+main_counter=0
+threshold_counter=0
 list_lines = []
 drive_to_check = ''
 #Loading the Threshold Parameters.
@@ -80,20 +82,47 @@ def check_errors():
             if int(list_lines[x][1]) > parameters[parameter]["threshold"]:
                 table.add_row([parameter,list_lines[x][1],parameters[parameter]["threshold"],parameters[parameter]["comment"]])
             else:
-                table.add_row([parameter,list_lines[x][1],parameters[parameter]["threshold"],"Device is running smooth"])
+                table.add_row([parameter,list_lines[x][1],parameters[parameter]["threshold"],"Device is running smoothly"])
         elif parameters[parameter]["comparison"] == "<":
             if int(list_lines[x][1]) < parameters[parameter]["threshold"]:
                 table.add_row([parameter,list_lines[x][1],parameters[parameter]["threshold"],parameters[parameter]["comment"]])
             else:
-                table.add_row([parameter,list_lines[x][1],parameters[parameter]["threshold"],"Device is running smooth"])
+                table.add_row([parameter,list_lines[x][1],parameters[parameter]["threshold"],"Device is running smoothly"])
         else:
             print("Invalid paramter")
-       
+            
+#Code for Data Analysis - we check when the device has overheated. If temp drops below threshold for 1 minute reset the counters.
+def data_analysis(threshold_temp):
+    start_timestamp=""
+    end_timestamp=""
+    if(list_lines[0][1]>threshold_temp & main_counter==0):
+        main_counter=main_counter+1
+        # Add update for start_timestamp here - start_timestamp=
+    if(list_lines[0][1]<=threshold_temp & (main_counter>=0 & threshold_counter <=6):
+       threshold_counter=threshold_counter+1
+    if(list_lines[0][1]<=threshold_temp & threshold_counter==6:
+       # Add update for end_timestamp here - end_timestamp=
+       time=get_time_duration(main_counter)
+       main_counter=0
+       threshold_counter=0
+       print("Device overheated from "+start_timestamp+" to " +end_timestamp+".\nTotal time Duration was "+time+".\nCheck the applications you were running at that given time") 
+
+def get_time_duration(x):
+    if(x>360):
+       hours=x/360
+       x=x/360
+    if(x>6):
+       minutes=x/6
+       x=x/6
+    seconds=x*10
+       # Append all values together as hours, minutes and seconds: time=
+    return(time)
 #Driver method
 def driver():
     run_check()
     write_header()
     check_errors()
+    data_analysis()
     print(table.draw())
     print("=================================================================================================================")
     table.reset()
