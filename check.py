@@ -11,7 +11,7 @@ from texttable import Texttable #Create an output table.
 
 action = 0
 list_lines = []
-
+drive_to_check = ''
 #Loading the Threshold Parameters.
 j = open('threshold.json') 
 parameters = json.load(j)
@@ -19,14 +19,18 @@ parameters = json.load(j)
 #Creating a table that compares current value of NVME drive parameters with threshold values.
 table = Texttable()
 
+def get_drive():
+    os.system("sudo nvme list")
+    print('These are the available NVME Drives. Which one will you like to check?') #Asking the user which NVME drive he wants to check.
+    global drive_to_check
+    drive_to_check =input() #Taking user input.
+    print('Checking for Drive', drive_to_check)
+
 #This function obtains the SMART LOG for the given NVME device. 
 def run_check():
-    # nvme_list = subprocess.check_output("sudo nvme list", shell=True); #Obtaining the list of NVME drives in the system.
-    # print('These are the available NVME Drives. Which one will you like to check? \n ', nvme_list) #Asking the user which NVME drive he wants to check.      
-    # drive_to_check=input() #Taking user input.
-    # print('Checking for Drive', drive_to_check)
+    
     table.add_rows([['Parameter','Current Value','Threshold Value','Comments']])
-    os.system('sudo nvme smart-log /dev/nvme0 -H > smartLog.txt') #Running the SMART log command for the given NVME drive and storing it in smartLog.txt.
+    os.system('sudo nvme smart-log /dev/' + drive_to_check + ' -H > smartLog.txt') #Running the SMART log command for the given NVME drive and storing it in smartLog.txt.
     os.system("sed -i '1,8d' smartLog.txt") 
 
 #This function extracts the SMART log file and pre-processes it so that it can be used for inferences.
@@ -94,14 +98,12 @@ def driver():
     print("=================================================================================================================")
     table.reset()
 
+
 schedule.every(10).seconds.do(driver)
 
-while True:
+if __name__ == '__main__':
+    get_drive()
+    while True:
         schedule.run_pending()
         time.sleep(1)
-# if __name__ == '__main__':
-#     while True:
-#         schedule.run_pending()
-#         time.sleep(1)
-    # driver()
-    # print(table.draw())
+   
