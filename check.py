@@ -120,6 +120,7 @@ def get_time_duration(x):
     seconds=x
     time=""+str(hours)+":"+str(minutes)+":"+str(seconds)
     return time
+
 #Driver method
 def driver():
     run_check()
