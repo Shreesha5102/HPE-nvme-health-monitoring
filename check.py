@@ -100,7 +100,6 @@ def data_analysis():
     time.tzset()
     tt = time.strftime("%X")
     global main_counter,start_timestamp,end_timestamp,threshold_counter
-
     if int(list_lines[0][1])>parameters["temperature"]["threshold"]:
         if main_counter==0:
             start_timestamp=time.strftime("%X")
@@ -123,8 +122,8 @@ def get_time_duration(x):
     minutes=x//60
     x=x%60
     seconds=x
-
     return "%d:%02d:%02d" % (hours, minutes, seconds)
+
 #Driver method
 def driver():
     run_check()
