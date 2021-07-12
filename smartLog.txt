@@ -1,15 +1,15 @@
-temperature				: 40 C
+temperature				: 39 C
 available_spare				: 100%
 available_spare_threshold		: 10%
 percentage_used				: 3%
 endurance group critical warning summary: 0
-data_units_read				: 3,21,02,846
-data_units_written			: 1,85,27,176
-host_read_commands			: 46,24,27,962
-host_write_commands			: 32,04,13,517
-controller_busy_time			: 10,652
-power_cycles				: 2,013
-power_on_hours				: 3,523
+data_units_read				: 3,22,72,573
+data_units_written			: 1,86,01,239
+host_read_commands			: 46,45,76,633
+host_write_commands			: 32,13,87,983
+controller_busy_time			: 10,696
+power_cycles				: 2,019
+power_on_hours				: 3,534
 unsafe_shutdowns			: 104
 media_errors				: 0
 num_err_log_entries			: 0
