@@ -1,6 +1,6 @@
 {
     "temperature": {
-        "threshold": 35,
+        "threshold": 40,
         "comparison": ">",
         "comment": "NVME Drive is overheating"
     },
