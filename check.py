@@ -94,31 +94,32 @@ def check_errors():
 def data_analysis():
     start_timestamp=""
     end_timestamp=""
+    timestamp=datetime.datetime.now()
     global main_counter
     global threshold_counter
 
-    if int(list_lines[0][1])>parameters["temperature"]["threshold"] and main_counter==0:
-        main_counter+=1
-        start_timestamp=datetime.datetime.now()
-    if int(list_lines[0][1])<=parameters["temperature"]["threshold"] and (main_counter>=0 and threshold_counter <=2):
+    if int(list_lines[0][1])>=parameters["temperature"]["threshold"]:
+        main_counter+=10
+        if main_counter==0:
+            start_timestamp=timestamp.strftime("%H:%M:%S.%f")
+    if int(list_lines[0][1])<=parameters["temperature"]["threshold"] and (main_counter>0 and threshold_counter <=2):
        threshold_counter+=1
     if int(list_lines[0][1])<=parameters["temperature"]["threshold"] and threshold_counter==2:
-       end_timestamp=datetime.datetime.now()
+       end_timestamp=timestamp.strftime("%H:%M:%S.%f")
+       print(main_counter)
        time=get_time_duration(main_counter)
        main_counter=0
        threshold_counter=0
-       print("Device overheated from "+start_timestamp+" to " +end_timestamp+".\nTotal time Duration was"+ time +" .\nCheck the applications you were running at that given time") 
+       print("Device overheated from "+start_timestamp+" to " +end_timestamp+".\nTotal time Duration was:"+ time +" .\nCheck the applications you were running at that given time") 
 
 def get_time_duration(x):
-    if(x>360):
-       hours=x/360
-       x=x/360
-    if(x>6):
-       minutes=x/6
-       x=x/6
-    seconds=x*10
-    time=str(hours)+":"+str(minutes)+":"+str(seconds)
-    return(time)
+    hours=x//3600
+    x=x%3600
+    minutes=x//60
+    x=x%60
+    seconds=x
+    time=""+str(hours)+":"+str(minutes)+":"+str(seconds)
+    return time
 #Driver method
 def driver():
     run_check()
