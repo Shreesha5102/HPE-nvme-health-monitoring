@@ -1,6 +1,5 @@
 #Importing the necessary libraries.
 import os
-import subprocess
 import schedule #For checking the NVME Drive periodically.
 import time
 import datetime
@@ -39,7 +38,7 @@ def run_check():
 def extract_log():
     global list_lines
     file = open("smartLog.txt","r") #Obtaining the SMART log file.
-
+    list_lines.clear()
     #Removes empty spaces and separates lines as list of key value pairs
     for line in file:
         stripped_line = line.strip()
@@ -92,20 +91,25 @@ def check_errors():
             print("Invalid paramter")
             
 #Code for Data Analysis - we check when the device has overheated. If temp drops below threshold for 1 minute reset the counters.
-def data_analysis(threshold_temp):
+def data_analysis():
     start_timestamp=""
     end_timestamp=""
-    if(list_lines[0][1]>threshold_temp & main_counter==0):
-        main_counter=main_counter+1
-        # Add update for start_timestamp here - start_timestamp=
-    if(list_lines[0][1]<=threshold_temp & (main_counter>=0 & threshold_counter <=6):
-       threshold_counter=threshold_counter+1
-    if(list_lines[0][1]<=threshold_temp & threshold_counter==6:
-       # Add update for end_timestamp here - end_timestamp=
-       time=get_time_duration(main_counter)
+    timestamp = datetime.datetime.now()
+    global main_counter
+    global threshold_counter
+    if int(list_lines[0][1])>parameters["temperature"]["threshold"] and main_counter==0:
+        main_counter+=1
+        # Add update for start_timestamp here - 
+        start_timestamp = timestamp.strftime("%H:%M:%S.%f")
+    if int(list_lines[0][1])<=parameters["temperature"]["threshold"] and (main_counter>=0 and threshold_counter <=2):
+       threshold_counter+=1
+    if int(list_lines[0][1])<=parameters["temperature"]["threshold"] and threshold_counter==2:
+       # Add update for end_timestamp here - 
+       end_timestamp = timestamp.strftime("%H:%M:%S.%f")
+       #time=get_time_duration(main_counter)
        main_counter=0
        threshold_counter=0
-       print("Device overheated from "+start_timestamp+" to " +end_timestamp+".\nTotal time Duration was "+time+".\nCheck the applications you were running at that given time") 
+       print("Device overheated from "+start_timestamp+" to " +end_timestamp+".\nTotal time Duration was .\nCheck the applications you were running at that given time") 
 
 def get_time_duration(x):
     if(x>360):
