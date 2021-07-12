@@ -97,7 +97,7 @@ def data_analysis():
     timestamp=datetime.datetime.now()
     global main_counter
     global threshold_counter
-    if int(list_lines[0][1])>=parameters["temperature"]["threshold"]:
+    if int(list_lines[0][1])>parameters["temperature"]["threshold"]:
         if main_counter==0:
             start_timestamp=timestamp.strftime("%H:%M:%S.%f")
         main_counter+=10
