@@ -97,11 +97,11 @@ def data_analysis(threshold_temp):
     end_timestamp=""
     if(list_lines[0][1]>threshold_temp & main_counter==0):
         main_counter=main_counter+1
-        # Add update for start_timestamp here - start_timestamp=
+        start_timestamp=datetime.datetime.now()
     if(list_lines[0][1]<=threshold_temp & (main_counter>=0 & threshold_counter <=6):
        threshold_counter=threshold_counter+1
     if(list_lines[0][1]<=threshold_temp & threshold_counter==6:
-       # Add update for end_timestamp here - end_timestamp=
+       end_timestamp=datetime.datetime.now()
        time=get_time_duration(main_counter)
        main_counter=0
        threshold_counter=0
@@ -115,7 +115,7 @@ def get_time_duration(x):
        minutes=x/6
        x=x/6
     seconds=x*10
-       # Append all values together as hours, minutes and seconds: time=
+    time=str(hours)+":"+str(minutes)+":"+str(seconds)
     return(time)
 #Driver method
 def driver():
