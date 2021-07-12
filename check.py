@@ -1,8 +1,8 @@
 #Importing the necessary libraries.
 import os
 import schedule 
-import time
 import datetime
+import time
 import csv 
 import json
 from texttable import Texttable 
@@ -13,12 +13,16 @@ main_counter=0
 threshold_counter=0
 list_lines = []
 drive_to_check = ''
+start_timestamp=""
+end_timestamp=""
 #Loading the Threshold Parameters.
 j = open('threshold.json') 
 parameters = json.load(j)
 
 #Creating a table that compares current value of NVME drive parameters with threshold values.
 table = Texttable()
+
+table1 = Texttable()
 
 def get_drive():
     os.system("sudo nvme list")
@@ -64,7 +68,7 @@ def write_header():
         value.append(line[1])
     key.append('Timestamp') #adding timestamp column
     value.append(datetime.datetime.now()) #adding timestamp value
-    if action == 0:
+    if action == 0 and os.stat("log.csv").st_size == 0:
         action += 1
         writer.writerow(key)
         writer.writerow(value)
@@ -92,34 +96,35 @@ def check_errors():
             
 #Code for Data Analysis - we check when the device has overheated. If temp drops below threshold for 1 minute reset the counters.
 def data_analysis():
-    start_timestamp=""
-    end_timestamp=""
-    timestamp=datetime.datetime.now()
-    global main_counter
-    global threshold_counter
+    os.environ['TZ'] = 'Asia/Kolkata'
+    time.tzset()
+    tt = time.strftime("%X")
+    global main_counter,start_timestamp,end_timestamp,threshold_counter
 
     if int(list_lines[0][1])>parameters["temperature"]["threshold"]:
         if main_counter==0:
-            start_timestamp=timestamp.strftime("%H:%M:%S.%f")
+            start_timestamp=time.strftime("%X")
         main_counter+=10
     if int(list_lines[0][1])<=parameters["temperature"]["threshold"] and (main_counter>0 and threshold_counter <=2):
        threshold_counter+=1
     if int(list_lines[0][1])<=parameters["temperature"]["threshold"] and threshold_counter==2:
-       end_timestamp=timestamp.strftime("%H:%M:%S.%f")
-       print(main_counter)
-       time=get_time_duration(main_counter)
+       end_timestamp=time.strftime("%X")
+       ti=get_time_duration(main_counter)
        main_counter=0
        threshold_counter=0
-       print("Device overheated from "+start_timestamp+" to " +end_timestamp+".\nTotal time Duration was:"+ time +" .\nCheck the applications you were running at that given time") 
-
+       table1.add_rows([["Start Time","End Time", "Duration"],[start_timestamp,end_timestamp,ti]])
+       print("Following table summarises the period of NVME Drive overheat\nCheck the applications you were running at that given time") 
+       print(table1.draw())
+       print("=================================================================================================================")
 def get_time_duration(x):
+    x = x % (24*3600)
     hours=x//3600
     x=x%3600
     minutes=x//60
     x=x%60
     seconds=x
-    time=""+str(hours)+":"+str(minutes)+":"+str(seconds)
-    return time
+
+    return "%d:%02d:%02d" % (hours, minutes, seconds)
 #Driver method
 def driver():
     run_check()
