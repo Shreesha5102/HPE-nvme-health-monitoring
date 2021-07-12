@@ -1,11 +1,11 @@
 #Importing the necessary libraries.
 import os
-import schedule #For checking the NVME Drive periodically.
+import schedule 
 import time
 import datetime
 import csv 
-import json #To access Threshold values.
-from texttable import Texttable #Create an output table. 
+import json
+from texttable import Texttable 
 
 
 action = 0
@@ -94,22 +94,20 @@ def check_errors():
 def data_analysis():
     start_timestamp=""
     end_timestamp=""
-    timestamp = datetime.datetime.now()
     global main_counter
     global threshold_counter
+
     if int(list_lines[0][1])>parameters["temperature"]["threshold"] and main_counter==0:
         main_counter+=1
-        # Add update for start_timestamp here - 
-        start_timestamp = timestamp.strftime("%H:%M:%S.%f")
+        start_timestamp=datetime.datetime.now()
     if int(list_lines[0][1])<=parameters["temperature"]["threshold"] and (main_counter>=0 and threshold_counter <=2):
        threshold_counter+=1
     if int(list_lines[0][1])<=parameters["temperature"]["threshold"] and threshold_counter==2:
-       # Add update for end_timestamp here - 
-       end_timestamp = timestamp.strftime("%H:%M:%S.%f")
-       #time=get_time_duration(main_counter)
+       end_timestamp=datetime.datetime.now()
+       time=get_time_duration(main_counter)
        main_counter=0
        threshold_counter=0
-       print("Device overheated from "+start_timestamp+" to " +end_timestamp+".\nTotal time Duration was .\nCheck the applications you were running at that given time") 
+       print("Device overheated from "+start_timestamp+" to " +end_timestamp+".\nTotal time Duration was"+ time +" .\nCheck the applications you were running at that given time") 
 
 def get_time_duration(x):
     if(x>360):
@@ -119,7 +117,7 @@ def get_time_duration(x):
        minutes=x/6
        x=x/6
     seconds=x*10
-       # Append all values together as hours, minutes and seconds: time=
+    time=str(hours)+":"+str(minutes)+":"+str(seconds)
     return(time)
 #Driver method
 def driver():
