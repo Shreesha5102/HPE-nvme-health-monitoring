@@ -110,10 +110,10 @@ def data_analysis(threshold_temp):
 def get_time_duration(x):
     if(x>360):
        hours=x/360
-       x=x/360
+       x=x%360
     if(x>6):
        minutes=x/6
-       x=x/6
+       x=x%6
     seconds=x*10
     time=str(hours)+":"+str(minutes)+":"+str(seconds)
     return(time)
