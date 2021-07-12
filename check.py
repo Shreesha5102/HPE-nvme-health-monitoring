@@ -13,6 +13,8 @@ main_counter=0
 threshold_counter=0
 list_lines = []
 drive_to_check = ''
+start_timestamp=""
+end_timestamp=""
 #Loading the Threshold Parameters.
 j = open('threshold.json') 
 parameters = json.load(j)
@@ -92,20 +94,18 @@ def check_errors():
             
 #Code for Data Analysis - we check when the device has overheated. If temp drops below threshold for 1 minute reset the counters.
 def data_analysis():
-    start_timestamp=""
-    end_timestamp=""
-    timestamp=datetime.datetime.now()
     global main_counter
     global threshold_counter
+    global start_timestamp
+    global end_timestamp
     if int(list_lines[0][1])>parameters["temperature"]["threshold"]:
         if main_counter==0:
-            start_timestamp=timestamp.strftime("%H:%M:%S.%f")
+            start_timestamp=datetime.datetime.now().strftime("%H:%M:%S.%f")
         main_counter+=10
     if int(list_lines[0][1])<=parameters["temperature"]["threshold"] and (main_counter>0 and threshold_counter <=2):
        threshold_counter+=1
     if int(list_lines[0][1])<=parameters["temperature"]["threshold"] and threshold_counter==2:
-       end_timestamp=timestamp.strftime("%H:%M:%S.%f")
-       print(main_counter)
+       end_timestamp=datetime.datetime.now().strftime("%H:%M:%S.%f")
        time=get_time_duration(main_counter)
        main_counter=0
        threshold_counter=0
